@@ -20,8 +20,6 @@ export const AuthContextProvider = ({ children }) => {
           initialLoading: false,
           user: response.data.user,
         });
-
-        console.log(window.location.href);
       } catch (error) {
         setAuthState({
           ...authState,

@@ -25,7 +25,7 @@ export const Register = () => {
   };
 
   return (
-    <>
+    <div className="register-container">
       {registrationSuccessfully ? (
         <FinishRegistration />
       ) : (
@@ -58,6 +58,6 @@ export const Register = () => {
           </div>
         </form>
       )}
-    </>
+    </div>
   );
 };

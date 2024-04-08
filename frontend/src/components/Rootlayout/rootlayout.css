@@ -53,8 +53,13 @@ nav a,
 .user-side-container {
   gap: 20px;
 }
+.register-container,
+.login-container {
+  display: flex;
+}
 
-form {
+.register-container form,
+.login-container form {
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -66,7 +71,8 @@ form {
   background: #e5ebf2;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
-form label {
+.register-container form label,
+.login-container form label {
   display: flex;
   flex-direction: column;
   font-weight: 500;
@@ -96,7 +102,8 @@ form label {
 }
 
 .login-btn,
-.register-btn {
+.register-btn,
+.send-button {
   background: #10142c;
   padding: 10px 20px;
   color: white;
@@ -107,7 +114,7 @@ form label {
   font-size: 1rem;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 850px) {
   nav a,
   .user-side-container a {
     padding: 5px 10px;

@@ -1,6 +1,6 @@
 import "./rootlayout.css";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import inbox from "/src/assets/inbox.svg";
 import sent from "/src/assets/sent.svg";
 import archived from "/src/assets/archived.svg";
@@ -9,11 +9,10 @@ import { AuthContext } from "../../AuthContext";
 import { axiosInstance } from "../../axiosInstance";
 
 export const Rootlayout = () => {
+  const titleVisableRef = useRef(false);
   const { width } = useWindowDimensions();
   const { authState, setAuthState } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  console.log(authState);
 
   function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
@@ -41,19 +40,22 @@ export const Rootlayout = () => {
   }
 
   let linkArray = [
-    { path: "inbox", title: "Inbox" },
-    { path: "sent", title: "Sent" },
-    { path: "archived", title: "Archived" },
-    { path: "compose", title: "Compose" },
+    { path: "/c/inbox", title: "Inbox", exact: true },
+    { path: "/c/sent", title: "Sent", exact: false },
+    { path: "/c/archived", title: "Archived", exact: false },
+    { path: "/compose", title: "Compose", exact: false },
   ];
 
-  if (width < 800) {
+  if (width < 850) {
     linkArray = [
-      { path: "inbox", title: inbox },
-      { path: "sent", title: sent },
-      { path: "archived", title: archived },
-      { path: "compose", title: compose },
+      { path: "/c/inbox", title: inbox, exact: true },
+      { path: "/c/sent", title: sent, exact: false },
+      { path: "/c/archived", title: archived, exact: false },
+      { path: "/compose", title: compose, exact: false },
     ];
+    titleVisableRef.current = true;
+  } else {
+    titleVisableRef.current = false;
   }
 
   const logOutFunction = async (e) => {
@@ -78,21 +80,25 @@ export const Rootlayout = () => {
   return (
     <>
       <header>
-        <div className="title-container">
-          <h1>📮Mail</h1>
-        </div>
+        {titleVisableRef.current || (
+          <div className="title-container">
+            <h1>📮Mail</h1>
+          </div>
+        )}
 
         {authState.user !== null && (
           <nav>
-            {linkArray.map((link, index) => (
-              <NavLink to={`/${link.path}`} key={index}>
-                {width < 800 ? (
-                  <img src={link.title} alt="link-icon" />
-                ) : (
-                  <span>{link.title}</span>
-                )}
-              </NavLink>
-            ))}
+            {linkArray.map((link, index) => {
+              return (
+                <NavLink to={link.path} key={index}>
+                  {width < 850 ? (
+                    <img src={link.title} alt="link-icon" />
+                  ) : (
+                    <span>{link.title}</span>
+                  )}
+                </NavLink>
+              );
+            })}
           </nav>
         )}
 

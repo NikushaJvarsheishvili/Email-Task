@@ -15,9 +15,8 @@ export const Login = () => {
 
     const response = await axiosInstance.post("/user/login", dataJson);
 
-    console.log(response);
     if (response.statusText === "OK") {
-      navigate("/");
+      navigate("/c/inbox");
       setAuthState({
         ...authState,
         user: response.data.user,
@@ -26,7 +25,7 @@ export const Login = () => {
   };
 
   return (
-    <>
+    <div className="login-container">
       <form onSubmit={loginFunction}>
         <label>
           Email
@@ -51,6 +50,6 @@ export const Login = () => {
           <button className="login-btn">Login</button>
         </div>
       </form>
-    </>
+    </div>
   );
 };

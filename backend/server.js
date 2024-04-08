@@ -4,7 +4,10 @@ import cors from "cors";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import bcrypt from "bcrypt";
-import { usersModel } from "./usersModel.js";
+
+import { usersModel } from "./models/usersModel.js";
+import { verifyAuth } from "./middleware/verifyAuth.js";
+import { emailsModel } from "./models/emailsModel.js";
 
 const app = express();
 
@@ -30,16 +33,8 @@ app.use(
   })
 );
 
-app.get("/user/status", async (req, res) => {
-  const user = await usersModel
-    .findById(req.session.userId)
-    .select("-password");
-
-  if (user) {
-    res.json({ user });
-  } else {
-    res.status(401).json({ message: "Unauthorized" });
-  }
+app.get("/user/status", verifyAuth, async (req, res) => {
+  res.json({ user: req.user });
 });
 
 app.post("/user/register", async (req, res) => {
@@ -60,7 +55,7 @@ app.post("/user/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const loginUser = await usersModel.findOne({ email });
+    const loginUser = await usersModel.findOne({ email }).lean();
 
     if (loginUser) {
       const comparePassword = await bcrypt.compare(
@@ -69,12 +64,10 @@ app.post("/user/login", async (req, res) => {
       );
 
       if (loginUser && comparePassword) {
-        req.session.userId = loginUser._id.toString();
-
-        return res.json({ user: loginUser });
+        const { password, ...rest } = loginUser;
+        req.session.userId = rest._id.toString();
+        res.json({ user: rest });
       }
-
-      return res.json({ message: "Logged in" });
     }
   } catch (error) {
     console.log(error.message);
@@ -86,6 +79,21 @@ app.delete("/user/logout", async (req, res) => {
   res.clearCookie("connect.sid");
 
   res.json({ message: "Logged Out" });
+});
+
+app.post("/emails", verifyAuth, async (req, res) => {
+  const newBody = req.body;
+  const senderId = req.user._id;
+
+  try {
+    const newEmails = new emailsModel({ sender: senderId, ...newBody });
+    await newEmails.save();
+
+    console.log(newEmails);
+    res.json({ message: "email sent", emailId: newEmails._id });
+  } catch (error) {
+    console.log(error.message);
+  }
 });
 
 app.listen(3000, async () => {
