@@ -14,7 +14,7 @@ export const Register = () => {
     const formdata = new FormData(e.target);
     const dataJson = Object.fromEntries(formdata.entries());
 
-    const response = await axiosInstance.post("/users/create-user", dataJson);
+    const response = await axiosInstance.post("/user/register", dataJson);
     if (response.status === 200 && response.statusText === "OK") {
       setRegistrationSuccessfully(true);
       setTimeout(() => {

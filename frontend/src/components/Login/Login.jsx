@@ -1,17 +1,46 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { axiosInstance } from "/src/axiosInstance.js";
+import { AuthContext } from "/src/AuthContext";
 
 export const Login = () => {
+  const { authState, setAuthState } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const loginFunction = async (e) => {
+    e.preventDefault();
+
+    const formdata = new FormData(e.target);
+    const dataJson = Object.fromEntries(formdata.entries());
+
+    const response = await axiosInstance.post("/user/login", dataJson);
+
+    console.log(response);
+    if (response.statusText === "OK") {
+      navigate("/");
+      setAuthState({
+        ...authState,
+        user: response.data.user,
+      });
+    }
+  };
+
   return (
     <>
-      <form>
+      <form onSubmit={loginFunction}>
         <label>
           Email
-          <input className="email-input" type="email" id="email" />
+          <input name="email" className="email-input" type="email" id="email" />
         </label>
 
         <label>
           Password
-          <input className="password-input" type="password" id="password" />
+          <input
+            name="password"
+            className="password-input"
+            type="password"
+            id="password"
+          />
         </label>
 
         <div className="account-register-link-container">

@@ -1,13 +1,19 @@
 import "./rootlayout.css";
-import { NavLink, Link, Outlet } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import inbox from "/src/assets/inbox.svg";
 import sent from "/src/assets/sent.svg";
 import archived from "/src/assets/archived.svg";
 import compose from "/src/assets/compose.svg";
+import { AuthContext } from "../../AuthContext";
+import { axiosInstance } from "../../axiosInstance";
 
 export const Rootlayout = () => {
   const { width } = useWindowDimensions();
+  const { authState, setAuthState } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  console.log(authState);
 
   function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
@@ -50,6 +56,25 @@ export const Rootlayout = () => {
     ];
   }
 
+  const logOutFunction = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axiosInstance.delete("/user/logout");
+
+      if (response.statusText === "OK") {
+        navigate("/login");
+        setAuthState({
+          ...authState,
+          user: null,
+        });
+        // console.log("1231");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <header>
@@ -57,23 +82,27 @@ export const Rootlayout = () => {
           <h1>📮Mail</h1>
         </div>
 
-        <nav>
-          {linkArray.map((link, index) => (
-            <NavLink to={`/${link.path}`} key={index}>
-              {width < 800 ? (
-                <img src={link.title} alt="link-icon" />
-              ) : (
-                <span>{link.title}</span>
-              )}
-            </NavLink>
-          ))}
-        </nav>
+        {authState.user !== null && (
+          <nav>
+            {linkArray.map((link, index) => (
+              <NavLink to={`/${link.path}`} key={index}>
+                {width < 800 ? (
+                  <img src={link.title} alt="link-icon" />
+                ) : (
+                  <span>{link.title}</span>
+                )}
+              </NavLink>
+            ))}
+          </nav>
+        )}
 
         <div className="user-side-container">
-          {/* user email */}
-          <h1>email</h1>
-
-          <Link>Log out</Link>
+          {authState.user !== null && (
+            <>
+              <h3>{authState.user.email}</h3>
+              <button onClick={logOutFunction}>Log out</button>
+            </>
+          )}
         </div>
       </header>
       <div className="outlet-container">

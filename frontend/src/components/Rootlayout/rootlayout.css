@@ -27,7 +27,7 @@ nav {
   gap: 20px;
 }
 nav a,
-.user-side-container a {
+.user-side-container button {
   border: 1px solid lightgray;
   display: flex;
   justify-content: center;
@@ -37,6 +37,11 @@ nav a,
   color: black;
   border-radius: 6px;
   padding: 10px 20px;
+}
+.user-side-container button {
+  font-size: 1rem;
+  background-color: transparent;
+  cursor: pointer;
 }
 .active {
   background-color: gainsboro;
