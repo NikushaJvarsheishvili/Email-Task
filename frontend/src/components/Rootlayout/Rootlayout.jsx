@@ -70,7 +70,6 @@ export const Rootlayout = () => {
           ...authState,
           user: null,
         });
-        // console.log("1231");
       }
     } catch (error) {
       console.log(error);
@@ -82,7 +81,7 @@ export const Rootlayout = () => {
       <header>
         {titleVisableRef.current || (
           <div className="title-container">
-            <h1>📮Mail</h1>
+            <a href="/c/inbox">📮Mail</a>
           </div>
         )}
 

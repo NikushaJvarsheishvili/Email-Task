@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const emailsSchema = new mongoose.Schema(
   {
-    sender: Object,
+    sender: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
     recipients: Array,
     subject: String,
     body: String,

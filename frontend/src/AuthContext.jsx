@@ -17,6 +17,7 @@ export const AuthContextProvider = ({ children }) => {
       try {
         const response = await axiosInstance.get("/user/status");
         setAuthState({
+          ...authState,
           initialLoading: false,
           user: response.data.user,
         });

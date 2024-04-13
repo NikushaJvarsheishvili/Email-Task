@@ -21,9 +21,9 @@
 }
 .compose-container form textarea {
   min-height: 300px;
-  min-width: 100%;
   max-width: 100%;
   padding-top: 10px;
+  resize: vertical;
 }
 .compose-container form label {
   display: flex;

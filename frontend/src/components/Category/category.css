@@ -1,6 +1,32 @@
 .category-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 15px;
   border: 1px solid red;
   width: 100%;
+}
+
+/*! sent side */
+.sents-list-container,
+.inbox-emails-link {
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid lightgray;
+  padding: 5px;
+  border-radius: 6px;
+  width: 100%;
+  text-decoration: none;
+  color: black;
+  transition: all 0.3s ease;
+}
+.sents-list-container:hover,
+.inbox-emails-link:hover {
+  background: lightgray;
+  transition: all 0.3s ease;
+}
+
+/* ! inbox */
+
+.inbox-emails-link {
+  border: 1px solid red;
 }

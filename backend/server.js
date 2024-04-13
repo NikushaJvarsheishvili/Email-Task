@@ -4,6 +4,7 @@ import cors from "cors";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import bcrypt from "bcrypt";
+import bodyParser from "body-parser";
 
 import { usersModel } from "./models/usersModel.js";
 import { verifyAuth } from "./middleware/verifyAuth.js";
@@ -11,6 +12,7 @@ import { emailsModel } from "./models/emailsModel.js";
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(
   cors({
@@ -86,11 +88,51 @@ app.post("/emails", verifyAuth, async (req, res) => {
   const senderId = req.user._id;
 
   try {
-    const newEmails = new emailsModel({ sender: senderId, ...newBody });
+    const newEmails = new emailsModel({ ...newBody, sender: senderId });
     await newEmails.save();
 
     console.log(newEmails);
-    res.json({ message: "email sent", emailId: newEmails._id });
+    res.json({ message: "email sent", email: newEmails });
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/emails/c/:emailCategory", verifyAuth, async (req, res) => {
+  const { emailCategory } = req.params;
+  const user = req.user;
+
+  try {
+    if (emailCategory === "inbox") {
+      const inboxEmails = await emailsModel
+        .find({ recipients: user.email })
+        .populate({
+          path: "sender",
+          select: "-password",
+        });
+      res.json({ emails: inboxEmails });
+    } else if (emailCategory === "sent") {
+      const sentEmail = await emailsModel.find({ sender: user._id });
+      res.json({ emails: sentEmail });
+    } else if (emailCategory === "archived") {
+      const archivedEmail = await emailsModel.find({ archived: true });
+      // res.json({ emails: archivedEmail });
+      // res.json({ emails: [] });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/emails/:emailId", async (req, res) => {
+  const { emailId } = req.params;
+
+  try {
+    const emailFindById = await emailsModel
+      .findById(emailId)
+      .populate({ path: "sender", select: "-password" });
+
+    res.json({ email: emailFindById });
   } catch (error) {
     console.log(error.message);
   }

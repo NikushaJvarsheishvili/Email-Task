@@ -1,9 +1,12 @@
 import "./compose.css";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { axiosInstance } from "/src/axiosInstance.js";
+import { AuthContext } from "../../AuthContext";
 
 export const Compose = () => {
   const navigate = useNavigate();
+  const { authState, setAuthState } = useContext(AuthContext);
 
   const sentEmailFuntion = async (e) => {
     e.preventDefault();
@@ -14,7 +17,7 @@ export const Compose = () => {
     const response = await axiosInstance.post("/emails", dataJson);
 
     if (response.statusText === "OK") {
-      navigate(`/emails/${response.data.emailId}`);
+      navigate(`/c/sent/${response.data.email._id}`);
     }
   };
 
