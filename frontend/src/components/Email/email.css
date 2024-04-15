@@ -2,3 +2,19 @@
   border: 1px solid red;
   width: 100%;
 }
+.email-container span {
+  font-weight: 400;
+}
+.category-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background: black;
+  border: 1px solid;
+  max-width: 70px;
+  color: white;
+  padding: 4px 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}

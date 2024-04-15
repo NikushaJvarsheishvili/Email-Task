@@ -24,7 +24,7 @@ export const AuthContextProvider = ({ children }) => {
       } catch (error) {
         setAuthState({
           ...authState,
-          initialLoading: true,
+          initialLoading: false,
         });
 
         if (!window.location.href.includes("/login")) {

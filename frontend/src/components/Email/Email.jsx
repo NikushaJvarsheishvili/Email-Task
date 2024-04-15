@@ -1,8 +1,10 @@
 import "./email.css";
 import { useParams, Link } from "react-router-dom";
-
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../axiosInstance";
+import { dateOptions } from "/src/dateOptions.js";
+import { timeOptions } from "/src/dateOptions.js";
+import { Date } from "../../Date";
 
 export const Email = () => {
   const { emailId, emailCategory } = useParams();
@@ -11,18 +13,23 @@ export const Email = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const emailFindByIdFunction = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axiosInstance.get(`/emails/${emailId}`);
-        setEmailById(response.data.email);
-      } catch (err) {
-        console.log(err.message);
-      }
+      setIsLoading(true);
+      const response = await axiosInstance.get(`/emails/${emailId}`, {
+        signal,
+      });
+      setEmailById(response.data.email);
       setIsLoading(false);
     };
 
     emailFindByIdFunction();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -32,14 +39,22 @@ export const Email = () => {
       ) : (
         <div className="email-container">
           <Link to={`/c/${emailCategory}`}>Back</Link>
-
           <h1>{emailById.subject || emailById.subject}</h1>
-          <br />
-          <p>{emailCategory}</p>
-          <br />
-          {/* <h2>From: {authState.user !== null && authState.user.email}</h2> */}
-          <h2>From: {emailById.sender.email && emailById.sender.email}</h2>
-          <h2>To: {emailById.recipients[0] || emailById.recipients[0]} </h2>
+          <p className="category-name">{emailCategory}</p>
+
+          <h2>
+            From:
+            <span> {emailById.sender.email && emailById.sender.email}</span>
+          </h2>
+          <h2>
+            To:
+            <span> {emailById.recipients[0] || emailById.recipients[0]}</span>
+          </h2>
+          <Date
+            dateOptions={dateOptions}
+            timeOptions={timeOptions}
+            createdAt={emailById}
+          />
         </div>
       )}
     </>

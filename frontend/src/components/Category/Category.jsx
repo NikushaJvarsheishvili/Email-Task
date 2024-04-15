@@ -1,18 +1,24 @@
 import "./category.css";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Inbox } from "./components/Inbox";
-import { Sent } from "./components/Sent";
-import { Archived } from "./components/Archived";
+import { useEffect, useState, useContext } from "react";
+import { useParams, Link } from "react-router-dom";
 import { axiosInstance } from "../../axiosInstance";
+import { AuthContext } from "/src/AuthContext";
+import { dateOptions } from "/src/dateOptions.js";
+import { timeOptions } from "/src/dateOptions.js";
+import { Date } from "../../Date";
 
 export const Category = () => {
   const { emailCategory } = useParams();
   const [emailsData, setEmailsData] = useState([]);
+  const { authState } = useContext(AuthContext);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const getEmailsFunction = async () => {
-      const response = await axiosInstance.get(`/emails/c/${emailCategory}`);
+      const response = await axiosInstance.get(`/emails/c/${emailCategory}`, {
+        signal: controller.signal,
+      });
       setEmailsData(response.data.emails);
     };
 
@@ -20,18 +26,34 @@ export const Category = () => {
 
     return () => {
       setEmailsData([]);
+      controller.abort();
     };
   }, [emailCategory]);
-  console.log(emailsData);
 
-  let component;
-  if (emailCategory === "inbox") {
-    component = <Inbox emailsData={emailsData} />;
-  } else if (emailCategory === "sent") {
-    component = <Sent emailsData={emailsData} />;
-  } else if (emailCategory === "archived") {
-    component = <Archived emailsData={emailsData} />;
-  }
+  return (
+    <div className="category-container">
+      <h2>{emailCategory}</h2>
+      {emailsData
+        .slice()
+        .reverse()
+        .map((email) => {
+          return (
+            <Link
+              to={`/c/${emailCategory}/${email._id}`}
+              key={email._id}
+              className="sents-list-container"
+            >
+              <h3>{authState.user.email}</h3>
 
-  return <div className="category-container">{component}</div>;
+              <p>{email.subject}</p>
+              <Date
+                dateOptions={dateOptions}
+                timeOptions={timeOptions}
+                createdAt={email}
+              />
+            </Link>
+          );
+        })}
+    </div>
+  );
 };
