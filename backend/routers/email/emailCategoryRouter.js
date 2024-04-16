@@ -12,7 +12,7 @@ emailCategoryRouter.get("/:emailCategory", verifyAuth, async (req, res) => {
   try {
     if (emailCategory === "inbox") {
       const inboxEmails = await emailsModel
-        .find({ recipients: user.email })
+        .find({ recipients: user.email, archived: false })
         .populate({
           path: "sender",
           select: "-password",
@@ -22,9 +22,13 @@ emailCategoryRouter.get("/:emailCategory", verifyAuth, async (req, res) => {
       const sentEmail = await emailsModel.find({ sender: user._id });
       res.json({ emails: sentEmail });
     } else if (emailCategory === "archived") {
-      const archivedEmail = await emailsModel.find({ archived: true });
-      // res.json({ emails: archivedEmail });
-      // res.json({ emails: [] });
+      const archivedEmail = await emailsModel
+        .find({ archived: true })
+        .populate({
+          path: "sender",
+          select: "-password",
+        });
+      res.json({ emails: archivedEmail });
     }
   } catch (error) {
     console.log(error.message);

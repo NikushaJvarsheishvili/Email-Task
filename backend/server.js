@@ -13,6 +13,7 @@ import logoutRouter from "./routers/user/logoutRouter.js";
 import emailsRouter from "./routers/email/emailsRouter.js";
 import emailCategoryRouter from "./routers/email/emailCategoryRouter.js";
 import emailIdRouter from "./routers/email/emailIdRouter.js";
+import emailsPatchRouter from "./routers/email/emailsPatchRouter.js";
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use("/user/logout", logoutRouter);
 app.use("/emails", emailsRouter);
 app.use("/emails/c/", emailCategoryRouter);
 app.use("/emails", emailIdRouter);
+app.use("/emails", emailsPatchRouter);
 
 app.listen(3000, async () => {
   try {

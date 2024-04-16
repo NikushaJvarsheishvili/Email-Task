@@ -30,6 +30,8 @@ export const Category = () => {
     };
   }, [emailCategory]);
 
+  console.log(emailsData);
+
   return (
     <div className="category-container">
       <h2>{emailCategory}</h2>
@@ -37,13 +39,19 @@ export const Category = () => {
         .slice()
         .reverse()
         .map((email) => {
+          console.log(email);
           return (
             <Link
               to={`/c/${emailCategory}/${email._id}`}
               key={email._id}
               className="sents-list-container"
             >
-              <h3>{authState.user.email}</h3>
+              {/* <h3>{authState.user.email}</h3> */}
+              {emailCategory === "inbox" || emailCategory === "archived" ? (
+                <h3>{email.sender.email}</h3>
+              ) : (
+                <h3>{authState.user.email}</h3>
+              )}
 
               <p>{email.subject}</p>
               <Date

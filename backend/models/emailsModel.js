@@ -9,7 +9,10 @@ const emailsSchema = new mongoose.Schema(
     recipients: Array,
     subject: String,
     body: String,
-    archived: Boolean,
+    archived: {
+      default: false,
+      type: Boolean,
+    },
   },
   { timestamps: true }
 );

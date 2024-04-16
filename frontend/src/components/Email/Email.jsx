@@ -1,5 +1,5 @@
 import "./email.css";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../axiosInstance";
 import { dateOptions } from "/src/dateOptions.js";
@@ -8,7 +8,7 @@ import { Date } from "../../Date";
 
 export const Email = () => {
   const { emailId, emailCategory } = useParams();
-
+  const navigate = useNavigate();
   const [emailById, setEmailById] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -31,6 +31,22 @@ export const Email = () => {
       controller.abort();
     };
   }, []);
+
+  const archiveEmailFunction = async (e) => {
+    e.preventDefault();
+
+    const response = await axiosInstance.patch(`/emails/${emailId}`, {
+      archived: !emailById.archived,
+    });
+    setEmailById(response.data.email);
+
+    if (response.statusText === "OK" && response.data.email.archived) {
+      navigate(`/c/archived/${emailId}`);
+      console.log("this is true");
+    } else if (response.statusText === "OK" && !response.data.email.archived) {
+      navigate(`/c/inbox/${emailId}`);
+    }
+  };
 
   return (
     <>
@@ -55,6 +71,12 @@ export const Email = () => {
             timeOptions={timeOptions}
             createdAt={emailById}
           />
+
+          {emailCategory !== "sent" && (
+            <button onClick={archiveEmailFunction}>
+              {emailById.archived ? "unarchived" : "archived"}
+            </button>
+          )}
         </div>
       )}
     </>
