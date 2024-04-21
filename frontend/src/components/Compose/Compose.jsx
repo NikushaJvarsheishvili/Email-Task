@@ -1,50 +1,91 @@
 import "./compose.css";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { axiosInstance } from "/src/axiosInstance.js";
-import { AuthContext } from "../../AuthContext";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Formik, Form, ErrorMessage, Field } from "formik";
+import { object, string } from "yup";
+import { axiosInstance } from "../../axiosInstance";
 
 export const Compose = () => {
   const navigate = useNavigate();
-  const { authState, setAuthState } = useContext(AuthContext);
+  const { state } = useLocation();
 
-  const sentEmailFuntion = async (e) => {
-    e.preventDefault();
+  const sentEmailFuntion = async (event, values) => {
+    event.preventDefault();
 
-    const formdata = new FormData(e.target);
-    const dataJson = Object.fromEntries(formdata.entries());
+    try {
+      const response = await axiosInstance.post("/emails", values);
 
-    const response = await axiosInstance.post("/emails", dataJson);
-
-    if (response.statusText === "OK") {
-      navigate(`/c/sent/${response.data.email._id}`);
+      if (response.statusText === "OK") {
+        navigate(`/c/sent/${response.data.email._id}`);
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
+  const initialValues = {
+    recipients: "",
+    subject: "",
+    body: "",
+  };
+
+  const validationSchema = object({
+    recipients: string().required(),
+    subject: string().required(),
+    body: string().required(),
+  });
+
   return (
     <div className="compose-container">
-      <form onSubmit={sentEmailFuntion}>
-        <label>
-          Recipients
-          <input name="recipients" type="text" />
-        </label>
+      <Formik
+        initialValues={state || initialValues}
+        enableReinitialize={true}
+        validationSchema={validationSchema}
+        onSubmit={(values) => sentEmailFuntion(event, values)}
+        validateOnChange={false}
+      >
+        {(formik) => {
+          console.log(formik);
+          return (
+            <Form>
+              <label>
+                Recipients
+                <Field name="recipients" type="text" />
+                <ErrorMessage
+                  name="recipients"
+                  component="span"
+                  className={`error-message`}
+                />
+              </label>
 
-        <label>
-          Subject
-          <input name="subject" type="text" />
-        </label>
+              <label>
+                Subject
+                <Field name="subject" type="text" />
+                <ErrorMessage
+                  name="subject"
+                  component="span"
+                  className="error-message"
+                />
+              </label>
 
-        <label>
-          Body
-          <textarea name="body"></textarea>
-        </label>
+              <label>
+                Body
+                <Field name="body" as="textarea" />
+                <ErrorMessage
+                  name="body"
+                  component="span"
+                  className="error-message"
+                />
+              </label>
 
-        <div className="button-container">
-          <button className="send-button" type="submit">
-            Send
-          </button>
-        </div>
-      </form>
+              <div className="button-container">
+                <button className="send-button" type="submit">
+                  Send
+                </button>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
     </div>
   );
 };

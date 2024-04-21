@@ -6,7 +6,7 @@ const emailsSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
-    recipients: Array,
+    recipients: [String],
     subject: String,
     body: String,
     archived: {

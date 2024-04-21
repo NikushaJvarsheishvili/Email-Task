@@ -1,6 +1,8 @@
 .email-container {
-  border: 1px solid red;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 .email-container span {
   font-weight: 400;
@@ -17,4 +19,101 @@
   padding: 4px 6px;
   font-size: 0.9rem;
   font-weight: 500;
+}
+.replay-button,
+.archived-button {
+  padding: 8px 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  background: none;
+  border: 1px solid lightgray;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.4s;
+}
+
+.replay-button:hover,
+.archived-button:hover,
+.email-container .go-back:hover {
+  background: lightgray;
+  transition: all 0.4s;
+}
+.email-container .button-container {
+  display: flex;
+  justify-content: start;
+  gap: 15px;
+}
+.email-container .go-back {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  margin-top: 20px;
+  font-size: 1rem;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid lightgray;
+  background: none;
+  color: black;
+  font-weight: 500;
+  transition: all 0.4s;
+  max-width: 60px;
+}
+.email-sent-info {
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 25px;
+}
+.body-container p {
+  font-size: 1.1rem;
+}
+.skeleton-loading-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 5px;
+  width: 100%;
+}
+.skeleton-loading-container div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 5px;
+  width: 100%;
+  background-color: rgb(231, 231, 231);
+  animation: skeletonAnimation 0.7s ease-in infinite;
+}
+.skeleton-loading-container div:nth-child(1) {
+  height: 30px;
+  border-radius: 6px;
+  max-width: 250px;
+}
+.skeleton-loading-container div:nth-child(2) {
+  height: 30px;
+  border-radius: 6px;
+  max-width: 80px;
+}
+.skeleton-loading-container div:nth-child(3),
+.skeleton-loading-container div:nth-child(4) {
+  height: 30px;
+  border-radius: 6px;
+  max-width: 350px;
+}
+.skeleton-loading-container div:nth-child(5) {
+  height: 30px;
+  border-radius: 6px;
+  max-width: 200px;
+}
+
+@keyframes skeletonAnimation {
+  0% {
+    background-color: rgb(246, 246, 246);
+  }
+  50% {
+    background-color: rgb(231, 231, 231);
+  }
+  100% {
+    background-color: rgb(246, 246, 246);
+  }
 }

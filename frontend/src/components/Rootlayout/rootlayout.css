@@ -6,14 +6,16 @@ header,
   justify-content: space-between;
 }
 header {
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid lightgray;
   padding-bottom: 20px;
   padding-top: 10px;
 }
 .outlet-container {
   display: flex;
   justify-content: center;
-  height: 800px;
+  min-height: 800px;
+  padding-top: 15px;
+  padding-bottom: 20px;
 }
 nav,
 .title-container,
@@ -118,6 +120,29 @@ nav a,
   color: black;
   font-weight: 500;
   font-size: 2rem;
+}
+
+.nav-skeleton-loading {
+  display: flex;
+  gap: 10px;
+}
+.nav-skeleton-loading div {
+  width: 80px;
+  border-radius: 6px;
+  background: rgb(231, 231, 231);
+  animation: skeletonAnimation 0.7s ease-in infinite;
+}
+
+@keyframes skeletonAnimation {
+  0% {
+    background-color: rgb(246, 246, 246);
+  }
+  50% {
+    background-color: rgb(231, 231, 231);
+  }
+  100% {
+    background-color: rgb(246, 246, 246);
+  }
 }
 
 @media screen and (max-width: 850px) {

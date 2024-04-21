@@ -6,13 +6,21 @@ const emailsRouter = express.Router();
 
 emailsRouter.post("/", verifyAuth, async (req, res) => {
   const newBody = req.body;
+  const { sender, recipients, subject, body, archived } = req.body;
   const senderId = req.user._id;
 
   try {
-    const newEmails = new emailsModel({ ...newBody, sender: senderId });
+    if (newBody._id) {
+      delete newBody._id;
+    }
+
+    const newEmails = new emailsModel({
+      ...newBody,
+      sender: senderId,
+      recipients: newBody.recipients.split(", "),
+    });
     await newEmails.save();
 
-    console.log(newEmails);
     res.json({ message: "email sent", email: newEmails });
   } catch (error) {
     console.log(error.message);

@@ -9,10 +9,16 @@ registerRouter.post("/", async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 12);
 
   try {
-    const newUser = new usersModel({ email, password: hashedPassword });
-    await newUser.save();
+    const checkUser = await usersModel.findOne({ email });
 
-    res.json({ message: "account created successfully" });
+    if (!checkUser) {
+      const newUser = new usersModel({ email, password: hashedPassword });
+      await newUser.save();
+
+      res.json({ message: "account created successfully" });
+    } else {
+      res.status(409).json({ message: "Email already registered" });
+    }
   } catch (error) {
     console.log(error.message);
   }

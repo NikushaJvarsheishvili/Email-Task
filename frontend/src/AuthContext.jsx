@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { axiosInstance } from "./axiosInstance.js";
+import { axiosInterceptorsInstance } from "./axiosInstance.js";
 
 export const AuthContext = createContext({
   initialLoading: true,
@@ -15,7 +15,8 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const checkStatus = async () => {
       try {
-        const response = await axiosInstance.get("/user/status");
+        const response = await axiosInterceptorsInstance.get("/user/status");
+
         setAuthState({
           ...authState,
           initialLoading: false,
@@ -32,7 +33,6 @@ export const AuthContextProvider = ({ children }) => {
         }
       }
     };
-
     checkStatus();
   }, []);
 

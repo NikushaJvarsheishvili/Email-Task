@@ -34,3 +34,9 @@
   display: flex;
   justify-content: end;
 }
+.error-message {
+  color: red;
+}
+.ia {
+  border: 1px solid red !important;
+}
