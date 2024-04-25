@@ -1,6 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { axiosInstance } from "/src/axiosInstance.js";
+import {
+  axiosInstance,
+  axiosInterceptorsInstance,
+} from "/src/axiosInstance.js";
 import { AuthContext } from "/src/AuthContext";
 
 export const Login = () => {
@@ -13,6 +16,7 @@ export const Login = () => {
     const formdata = new FormData(e.target);
     const dataJson = Object.fromEntries(formdata.entries());
 
+    //
     const response = await axiosInstance.post("/user/login", dataJson);
 
     if (response.statusText === "OK") {

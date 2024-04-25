@@ -1,9 +1,10 @@
 import express from "express";
 import { emailsModel } from "../../models/emailsModel.js";
+import { verifyAuth } from "../../middleware/verifyAuth.js";
 
 const emailIdRouter = express.Router();
 
-emailIdRouter.get("/:emailId", async (req, res) => {
+emailIdRouter.get("/:emailId", verifyAuth, async (req, res) => {
   const { emailId } = req.params;
 
   try {

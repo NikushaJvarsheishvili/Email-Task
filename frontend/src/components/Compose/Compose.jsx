@@ -2,7 +2,7 @@ import "./compose.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import { object, string } from "yup";
-import { axiosInstance } from "../../axiosInstance";
+import { axiosInstance, axiosInterceptorsInstance } from "../../axiosInstance";
 
 export const Compose = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export const Compose = () => {
     event.preventDefault();
 
     try {
-      const response = await axiosInstance.post("/emails", values);
+      const response = await axiosInterceptorsInstance.post("/emails", values);
 
       if (response.statusText === "OK") {
         navigate(`/c/sent/${response.data.email._id}`);

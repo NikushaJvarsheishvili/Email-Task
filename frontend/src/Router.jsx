@@ -21,7 +21,7 @@ import { useContext, useState, useEffect } from "react";
 export const RedirectIfLoggedIn = () => {
   const { authState } = useContext(AuthContext);
 
-  // if (authState.initialLoading) return null;
+  if (authState.initialLoading) return null;
 
   if (authState.user !== null) {
     return <Navigate to="/c/inbox" />;
@@ -61,6 +61,7 @@ export const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Rootlayout width={width} />}>
+        <Route index element={<Navigate to="/c/inbox" />} />
         <Route path="/c/:emailCategory" element={<Category width={width} />} />
         <Route path="/c/:emailCategory/:emailId" element={<Email />} />
         <Route path="/compose" element={<Compose />} />

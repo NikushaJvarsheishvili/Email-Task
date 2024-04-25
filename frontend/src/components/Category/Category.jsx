@@ -1,26 +1,38 @@
 import "./category.css";
 import { useEffect, useState, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
-import { axiosInstance } from "../../axiosInstance";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { axiosInstance, axiosInterceptorsInstance } from "../../axiosInstance";
 import { AuthContext } from "/src/AuthContext";
 import { dateOptions } from "/src/dateOptions.js";
 import { timeOptions } from "/src/dateOptions.js";
 import { Date } from "../../Date";
-import { EmailCategoryTitle } from "../EmailCategoryTitle";
+import { EmailCategoryTitle } from "/src/EmailCategoryTitle";
 
 export const Category = ({ width }) => {
   const { emailCategory } = useParams();
   const [emailsData, setEmailsData] = useState([]);
   const { authState } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const categorys = ["inbox", "sent", "archived"];
+
+  if (!categorys.includes(emailCategory.toLowerCase().trim())) {
+    navigate("/*");
+    return;
+  }
 
   useEffect(() => {
     const controller = new AbortController();
 
     const getEmailsFunction = async () => {
-      const response = await axiosInstance.get(`/emails/c/${emailCategory}`, {
-        signal: controller.signal,
-      });
+      const response = await axiosInterceptorsInstance.get(
+        `/emails/c/${emailCategory}`,
+        {
+          signal: controller.signal,
+        }
+      );
       setEmailsData(response.data.emails);
+      console.log(response.data);
     };
 
     getEmailsFunction();

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { axiosInterceptorsInstance } from "./axiosInstance.js";
+import { axiosInstance, axiosInterceptorsInstance } from "./axiosInstance.js";
 
 export const AuthContext = createContext({
   initialLoading: true,
@@ -15,7 +15,7 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const checkStatus = async () => {
       try {
-        const response = await axiosInterceptorsInstance.get("/user/status");
+        const response = await axiosInstance.get("/user/status");
 
         setAuthState({
           ...authState,
@@ -28,9 +28,9 @@ export const AuthContextProvider = ({ children }) => {
           initialLoading: false,
         });
 
-        if (!window.location.href.includes("/login")) {
-          window.location.href = "/login";
-        }
+        // if (!window.location.href.includes("/login")) {
+        //   window.location.href = "/login";
+        // }
       }
     };
     checkStatus();

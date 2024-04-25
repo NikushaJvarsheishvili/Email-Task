@@ -1,9 +1,10 @@
 import express from "express";
 import { emailsModel } from "../../models/emailsModel.js";
+import { verifyAuth } from "../../middleware/verifyAuth.js";
 
 const emailsPatchRouter = express.Router();
 
-emailsPatchRouter.patch("/:emailId", async (req, res) => {
+emailsPatchRouter.patch("/:emailId", verifyAuth, async (req, res) => {
   const { emailId } = req.params;
   const archived = req.body;
 

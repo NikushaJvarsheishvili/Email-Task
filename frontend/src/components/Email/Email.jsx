@@ -1,11 +1,11 @@
 import "./email.css";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
-import { axiosInstance } from "../../axiosInstance";
+import { axiosInstance, axiosInterceptorsInstance } from "../../axiosInstance";
 import { dateOptions } from "/src/dateOptions.js";
 import { timeOptions } from "/src/dateOptions.js";
 import { Date } from "../../Date";
-import { EmailCategoryTitle } from "../EmailCategoryTitle";
+import { EmailCategoryTitle } from "/src/EmailCategoryTitle";
 
 export const Email = () => {
   const [emailById, setEmailById] = useState(null);
@@ -20,9 +20,12 @@ export const Email = () => {
     const emailFindByIdFunction = async () => {
       setIsLoading(true);
 
-      const response = await axiosInstance.get(`/emails/${emailId}`, {
-        signal,
-      });
+      const response = await axiosInterceptorsInstance.get(
+        `/emails/${emailId}`,
+        {
+          signal,
+        }
+      );
 
       setIsLoading(false);
       setEmailById(response.data.email);
@@ -38,9 +41,12 @@ export const Email = () => {
   const archiveEmailFunction = async (e) => {
     e.preventDefault();
 
-    const response = await axiosInstance.patch(`/emails/${emailId}`, {
-      archived: !emailById.archived,
-    });
+    const response = await axiosInterceptorsInstance.patch(
+      `/emails/${emailId}`,
+      {
+        archived: !emailById.archived,
+      }
+    );
     setEmailById(response.data.email);
 
     if (response.statusText === "OK" && response.data.email.archived) {
@@ -93,7 +99,6 @@ export const Email = () => {
 
             <h2>
               From:
-              {/* <span> {emailById.sender.email && emailById.sender.email}</span> */}
               <span> {emailById.sender.email}</span>
             </h2>
             <h2>
