@@ -10,8 +10,8 @@ const emailsSchema = new mongoose.Schema(
     subject: String,
     body: String,
     archived: {
-      default: false,
       type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

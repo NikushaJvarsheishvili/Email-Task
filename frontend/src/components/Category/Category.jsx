@@ -6,7 +6,6 @@ import { AuthContext } from "/src/AuthContext";
 import { dateOptions } from "/src/dateOptions.js";
 import { timeOptions } from "/src/dateOptions.js";
 import { Date } from "../../Date";
-import { EmailCategoryTitle } from "/src/EmailCategoryTitle";
 
 export const Category = ({ width }) => {
   const { emailCategory } = useParams();
@@ -51,13 +50,9 @@ export const Category = ({ width }) => {
 
   return (
     <div className="category-container">
-      <h2>
-        <EmailCategoryTitle emailCategory={emailCategory} />
-      </h2>
+      <h2 className="category-title">{emailCategory}</h2>
       {emailsData.length === 0 ? (
-        <p>
-          No <EmailCategoryTitle emailCategory={emailCategory} />
-        </p>
+        <p className="category-title">no {emailCategory}</p>
       ) : (
         <>
           {emailsData

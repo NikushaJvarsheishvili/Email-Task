@@ -30,8 +30,8 @@ export const Compose = () => {
 
   const validationSchema = object({
     recipients: string().required(),
-    subject: string().required(),
-    body: string().required(),
+    subject: string().required().min(3),
+    body: string().required().min(3),
   });
 
   return (
@@ -59,7 +59,11 @@ export const Compose = () => {
 
               <label>
                 Subject
-                <Field name="subject" type="text" />
+                <Field
+                  name="subject"
+                  type="text"
+                  
+                />
                 <ErrorMessage
                   name="subject"
                   component="span"

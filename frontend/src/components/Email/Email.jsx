@@ -5,7 +5,6 @@ import { axiosInstance, axiosInterceptorsInstance } from "../../axiosInstance";
 import { dateOptions } from "/src/dateOptions.js";
 import { timeOptions } from "/src/dateOptions.js";
 import { Date } from "../../Date";
-import { EmailCategoryTitle } from "/src/EmailCategoryTitle";
 
 export const Email = () => {
   const [emailById, setEmailById] = useState(null);
@@ -93,9 +92,7 @@ export const Email = () => {
           </Link>
           <div className="email-sent-info">
             <h1>{emailById.subject || emailById.subject}</h1>
-            <p className="category-name">
-              <EmailCategoryTitle emailCategory={emailCategory} />
-            </p>
+            <p className="category-name">{emailCategory}</p>
 
             <h2>
               From:

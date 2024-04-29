@@ -52,6 +52,14 @@ export const Rootlayout = ({ width }) => {
     }
   };
 
+  let substringConfige;
+  if (width < 300) {
+    substringConfige = 10;
+  } else if (width < 600) {
+    substringConfige = 15;
+  }
+  console.log(substringConfige);
+
   return (
     <>
       <header>
@@ -87,7 +95,13 @@ export const Rootlayout = ({ width }) => {
             <div className="user-side-container">
               {authState.user !== null && (
                 <>
-                  <h3>{authState.user.email}</h3>
+                  {/* <h3>{authState.user.email}</h3> */}
+                  <h3>
+                    {width < 600
+                      ? authState.user.email.substring(0, substringConfige) +
+                        "..."
+                      : authState.user.email}
+                  </h3>
                   <button onClick={logOutFunction}>
                     {width < 850 ? (
                       <img src={logOut} alt="logOut-icon" />

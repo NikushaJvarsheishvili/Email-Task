@@ -4,6 +4,7 @@ import cors from "cors";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
 
 import statusRouter from "./routers/user/statusRouter.js";
 import registerRouter from "./routers/user/registerRouter.js";
@@ -17,17 +18,19 @@ import emailsPatchRouter from "./routers/email/emailsPatchRouter.js";
 
 const app = express();
 
+dotenv.config({ path: "./config/.env" });
+
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.ALLOWED_ORIGIN,
     credentials: true,
   })
 );
 app.use(
   session({
-    secret: "super secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -35,7 +38,7 @@ app.use(
       httpOnly: true,
     },
     store: MongoStore.create({
-      mongoUrl: "mongodb://127.0.0.1:27017/emailTask",
+      mongoUrl: process.env.MONGODB_URL,
     }),
   })
 );
@@ -50,9 +53,9 @@ app.use("/emails/c/", emailCategoryRouter);
 app.use("/emails", emailIdRouter);
 app.use("/emails", emailsPatchRouter);
 
-app.listen(3000, async () => {
+app.listen(process.env.EXPRESS_PORT, async () => {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/emailTask");
+    await mongoose.connect(process.env.MONGODB_URL);
     console.log("mongoose connected");
   } catch (error) {
     console.log(error.message);

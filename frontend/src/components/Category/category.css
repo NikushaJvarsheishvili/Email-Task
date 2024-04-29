@@ -5,6 +5,10 @@
   width: 100%;
 }
 
+.category-title {
+  text-transform: capitalize;
+}
+
 /*! sent side */
 .sents-list-container,
 .inbox-emails-link {
