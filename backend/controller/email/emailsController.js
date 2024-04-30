@@ -1,6 +1,7 @@
 import { emailsModel } from "../../models/emailsModel.js";
+import asyncHandler from "express-async-handler";
 
-export const emailsController = async (req, res) => {
+export const emailsController = asyncHandler(async (req, res) => {
   const newBody = req.body;
   const { sender, recipients, subject, body, archived } = req.body;
   const senderId = req.user._id;
@@ -21,4 +22,4 @@ export const emailsController = async (req, res) => {
   } catch (error) {
     console.log(error.message);
   }
-};
+});

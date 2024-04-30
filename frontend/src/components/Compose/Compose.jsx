@@ -59,11 +59,7 @@ export const Compose = () => {
 
               <label>
                 Subject
-                <Field
-                  name="subject"
-                  type="text"
-                  
-                />
+                <Field name="subject" type="text" />
                 <ErrorMessage
                   name="subject"
                   component="span"

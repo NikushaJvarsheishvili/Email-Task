@@ -66,6 +66,7 @@ export const Rootlayout = ({ width }) => {
         {titleVisableRef.current || (
           <div className="title-container">
             <a href="/c/inbox">📮Mail</a>
+            {/* <a href={authState.user !== null && "/c/inbox"}>📮Mail</a> */}
           </div>
         )}
 

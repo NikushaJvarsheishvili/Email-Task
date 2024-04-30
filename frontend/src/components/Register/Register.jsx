@@ -42,7 +42,7 @@ export const Register = () => {
 
   const validationSchema = object({
     email: string().required(),
-    password: string().required().min(8),
+    password: string().required().min(2),
     confirmPassword: string()
       .required()
       .oneOf([ref("password"), null], "Passwords must match"),

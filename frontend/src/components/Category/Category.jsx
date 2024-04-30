@@ -31,7 +31,6 @@ export const Category = ({ width }) => {
         }
       );
       setEmailsData(response.data.emails);
-      console.log(response.data);
     };
 
     getEmailsFunction();
@@ -48,6 +47,19 @@ export const Category = ({ width }) => {
     substringConfige = 10;
   }
 
+  const handleEmailDelete = async (e, emailId) => {
+    e.preventDefault();
+
+    const response = await axiosInterceptorsInstance.delete(
+      `/email/delete/${emailId}`
+    );
+
+    if (response.status === 200 && response.statusText === "OK") {
+      const emailDelete = emailsData.filter((email) => email._id !== emailId);
+      setEmailsData(emailDelete);
+    }
+  };
+
   return (
     <div className="category-container">
       <h2 className="category-title">{emailCategory}</h2>
@@ -60,29 +72,35 @@ export const Category = ({ width }) => {
             .reverse()
             .map((email) => {
               return (
-                <Link
-                  to={`/c/${emailCategory}/${email._id}`}
-                  key={email._id}
-                  className="sents-list-container"
-                >
-                  {emailCategory === "inbox" || emailCategory === "archived" ? (
-                    <h3>{email.sender.email}</h3>
-                  ) : (
-                    <h3>{authState.user.email}</h3>
-                  )}
+                <div className="list-container" key={email._id}>
+                  <Link
+                    to={`/c/${emailCategory}/${email._id}`}
+                    className="sents-list-container"
+                  >
+                    {emailCategory === "inbox" ||
+                    emailCategory === "archived" ? (
+                      <h3>{email.sender.email}</h3>
+                    ) : (
+                      <h3>{authState.user.email}</h3>
+                    )}
 
-                  {width <= 850 ? (
-                    <p>{email.subject.substring(0, substringConfige)}...</p>
-                  ) : (
-                    <p>{email.subject}</p>
-                  )}
+                    {width <= 850 ? (
+                      <p>{email.subject.substring(0, substringConfige)}...</p>
+                    ) : (
+                      <p>{email.subject}</p>
+                    )}
 
-                  <Date
-                    dateOptions={dateOptions}
-                    timeOptions={timeOptions}
-                    createdAt={email}
-                  />
-                </Link>
+                    <Date
+                      dateOptions={dateOptions}
+                      timeOptions={timeOptions}
+                      createdAt={email}
+                    />
+                  </Link>
+
+                  <button onClick={(e) => handleEmailDelete(e, email._id)}>
+                    Delete
+                  </button>
+                </div>
               );
             })}
         </>

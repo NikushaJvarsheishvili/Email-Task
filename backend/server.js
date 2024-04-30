@@ -15,6 +15,9 @@ import emailsRouter from "./routers/email/emailsRouter.js";
 import emailCategoryRouter from "./routers/email/emailCategoryRouter.js";
 import emailIdRouter from "./routers/email/emailIdRouter.js";
 import emailsPatchRouter from "./routers/email/emailsPatchRouter.js";
+import emailDeleteRouter from "./routers/email/emailDeleteRouter.js";
+
+import { handleError } from "./middleware/handleError.js";
 
 const app = express();
 
@@ -52,6 +55,9 @@ app.use("/emails", emailsRouter);
 app.use("/emails/c/", emailCategoryRouter);
 app.use("/emails", emailIdRouter);
 app.use("/emails", emailsPatchRouter);
+app.use("/email/delete", emailDeleteRouter);
+
+app.use(handleError);
 
 app.listen(process.env.EXPRESS_PORT, async () => {
   try {

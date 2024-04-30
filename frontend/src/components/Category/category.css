@@ -8,6 +8,9 @@
 .category-title {
   text-transform: capitalize;
 }
+.list-container {
+  display: flex;
+}
 
 /*! sent side */
 .sents-list-container,

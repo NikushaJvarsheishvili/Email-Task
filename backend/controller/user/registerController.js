@@ -1,22 +1,19 @@
 import bcrypt from "bcrypt";
 import { usersModel } from "../../models/usersModel.js";
+import asyncHandler from "express-async-handler";
 
-export const registerController = async (req, res) => {
+export const registerController = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 12);
 
-  try {
-    const checkUser = await usersModel.findOne({ email });
+  const checkUser = await usersModel.findOne({ email });
 
-    if (!checkUser) {
-      const newUser = new usersModel({ email, password: hashedPassword });
-      await newUser.save();
+  if (!checkUser) {
+    const newUser = new usersModel({ email, password: hashedPassword });
+    await newUser.save();
 
-      res.json({ message: "account created successfully" });
-    } else {
-      res.status(409).json({ message: "Email already registered" });
-    }
-  } catch (error) {
-    console.log(error.message);
+    res.json({ message: "account created successfully" });
+  } else {
+    res.status(409).json({ message: "Email already registered" });
   }
-};
+});
