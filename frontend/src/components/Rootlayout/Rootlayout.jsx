@@ -58,15 +58,17 @@ export const Rootlayout = ({ width }) => {
   } else if (width < 600) {
     substringConfige = 15;
   }
-  console.log(substringConfige);
 
   return (
     <>
       <header>
         {titleVisableRef.current || (
           <div className="title-container">
-            <a href="/c/inbox">📮Mail</a>
-            {/* <a href={authState.user !== null && "/c/inbox"}>📮Mail</a> */}
+            {authState.user !== null ? (
+              <a href="/c/inbox">📮Mail</a>
+            ) : (
+              <a href="">📮Mail</a>
+            )}
           </div>
         )}
 
@@ -96,7 +98,6 @@ export const Rootlayout = ({ width }) => {
             <div className="user-side-container">
               {authState.user !== null && (
                 <>
-                  {/* <h3>{authState.user.email}</h3> */}
                   <h3>
                     {width < 600
                       ? authState.user.email.substring(0, substringConfige) +

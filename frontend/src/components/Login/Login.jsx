@@ -5,19 +5,17 @@ import {
   axiosInterceptorsInstance,
 } from "/src/axiosInstance.js";
 import { AuthContext } from "/src/AuthContext";
+import { Formik, Form, ErrorMessage, Field } from "formik";
+import { object, string, ref } from "yup";
 
 export const Login = () => {
   const { authState, setAuthState } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const loginFunction = async (e) => {
-    e.preventDefault();
+  const loginFunction = async (event, values) => {
+    event.preventDefault();
 
-    const formdata = new FormData(e.target);
-    const dataJson = Object.fromEntries(formdata.entries());
-
-    //
-    const response = await axiosInstance.post("/user/login", dataJson);
+    const response = await axiosInstance.post("/user/login", values);
 
     if (response.statusText === "OK") {
       navigate("/c/inbox");
@@ -28,32 +26,71 @@ export const Login = () => {
     }
   };
 
+  const validationSchema = object({
+    email: string()
+      .required()
+      .matches(/^\S+@\S+\.\S+$/, "email is not a valid"),
+    password: string().required().min(8),
+  });
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
   return (
     <div className="login-container">
-      <form onSubmit={loginFunction}>
-        <label>
-          Email
-          <input name="email" className="email-input" type="email" id="email" />
-        </label>
+      <Formik
+        onSubmit={(values) => loginFunction(event, values)}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        validateOnBlur={false}
+        validateOnChange={false}
+      >
+        {(formik) => {
+          console.log(formik.errors);
+          return (
+            <Form noValidate>
+              <label>
+                Email
+                <Field
+                  name="email"
+                  className="email-input"
+                  type="email"
+                  id="email"
+                />
+                <ErrorMessage
+                  name="email"
+                  component="span"
+                  className="error-message"
+                />
+              </label>
 
-        <label>
-          Password
-          <input
-            name="password"
-            className="password-input"
-            type="password"
-            id="password"
-          />
-        </label>
+              <label>
+                Password
+                <Field
+                  name="password"
+                  className="password-input"
+                  type="password"
+                  id="password"
+                />
+                <ErrorMessage
+                  name="password"
+                  component="span"
+                  className="error-message"
+                />
+              </label>
 
-        <div className="account-register-link-container">
-          <span className="register-link">
-            Don't have an account? <Link to="/register">Register</Link>
-          </span>
+              <div className="account-register-link-container">
+                <span className="register-link">
+                  Don't have an account? <Link to="/register">Register</Link>
+                </span>
 
-          <button className="login-btn">Login</button>
-        </div>
-      </form>
+                <button className="login-btn">Login</button>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
     </div>
   );
 };

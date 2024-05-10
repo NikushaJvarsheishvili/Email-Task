@@ -5,6 +5,7 @@ import { axiosInstance, axiosInterceptorsInstance } from "../../axiosInstance";
 import { dateOptions } from "/src/dateOptions.js";
 import { timeOptions } from "/src/dateOptions.js";
 import { Date } from "../../Date";
+import { handleEmailDelete } from "../../deleteEmail";
 
 export const Email = () => {
   const [emailById, setEmailById] = useState(null);
@@ -64,7 +65,6 @@ export const Email = () => {
     isLoading ? null : emailById.createdAt
   ).toLocaleTimeString("en-US", timeOptions);
 
-  console.log(day, time);
   const replyFunction = (e) => {
     e.preventDefault();
 
@@ -118,12 +118,21 @@ export const Email = () => {
               Replay
             </button>
             {emailCategory !== "sent" && (
-              <button
-                className="archived-button"
-                onClick={archiveEmailFunction}
-              >
-                {emailById.archived ? "unarchived" : "archived"}
-              </button>
+              <>
+                <button
+                  className="archived-button"
+                  onClick={archiveEmailFunction}
+                >
+                  {emailById.archived ? "unarchived" : "archived"}
+                </button>
+
+                <button
+                  onClick={(e) => handleEmailDelete(e, emailId)}
+                  className="delete-button"
+                >
+                  Delete
+                </button>
+              </>
             )}
           </div>
         </div>

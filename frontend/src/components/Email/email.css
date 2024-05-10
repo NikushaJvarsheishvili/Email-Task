@@ -22,7 +22,8 @@
   text-transform: capitalize;
 }
 .replay-button,
-.archived-button {
+.archived-button,
+.delete-button {
   padding: 8px 10px;
   font-size: 1rem;
   font-weight: 500;
@@ -105,6 +106,16 @@
   height: 30px;
   border-radius: 6px;
   max-width: 200px;
+}
+
+.delete-button {
+  border-color: red;
+  color: red;
+}
+.delete-button:hover {
+  background-color: red;
+  transition: all 0.4s;
+  color: white;
 }
 
 @keyframes skeletonAnimation {

@@ -6,6 +6,8 @@ import { AuthContext } from "/src/AuthContext";
 import { dateOptions } from "/src/dateOptions.js";
 import { timeOptions } from "/src/dateOptions.js";
 import { Date } from "../../Date";
+import { handleEmailDelete } from "../../deleteEmail.js";
+import trashIcon from "/src/assets/trash.svg";
 
 export const Category = ({ width }) => {
   const { emailCategory } = useParams();
@@ -47,19 +49,6 @@ export const Category = ({ width }) => {
     substringConfige = 10;
   }
 
-  const handleEmailDelete = async (e, emailId) => {
-    e.preventDefault();
-
-    const response = await axiosInterceptorsInstance.delete(
-      `/email/delete/${emailId}`
-    );
-
-    if (response.status === 200 && response.statusText === "OK") {
-      const emailDelete = emailsData.filter((email) => email._id !== emailId);
-      setEmailsData(emailDelete);
-    }
-  };
-
   return (
     <div className="category-container">
       <h2 className="category-title">{emailCategory}</h2>
@@ -97,8 +86,13 @@ export const Category = ({ width }) => {
                     />
                   </Link>
 
-                  <button onClick={(e) => handleEmailDelete(e, email._id)}>
-                    Delete
+                  <button
+                    className="trash-button"
+                    onClick={(e) =>
+                      handleEmailDelete(e, email._id, emailsData, setEmailsData)
+                    }
+                  >
+                    <img src={trashIcon} alt="trash-icon" />
                   </button>
                 </div>
               );

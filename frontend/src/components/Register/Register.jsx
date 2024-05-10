@@ -42,7 +42,7 @@ export const Register = () => {
 
   const validationSchema = object({
     email: string().required(),
-    password: string().required().min(2),
+    password: string().required().min(8),
     confirmPassword: string()
       .required()
       .oneOf([ref("password"), null], "Passwords must match"),
@@ -59,6 +59,7 @@ export const Register = () => {
           initialValues={initialValues}
           onSubmit={(values) => createUser(event, values)}
           validateOnChange={false}
+          validateOnBlur={false}
           validationSchema={validationSchema}
         >
           {(formik) => {

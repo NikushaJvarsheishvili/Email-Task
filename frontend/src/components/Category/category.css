@@ -10,12 +10,28 @@
 }
 .list-container {
   display: flex;
+  gap: 10px;
+}
+
+.trash-button {
+  border: 1px solid red;
+  border-radius: 6px;
+  padding: 5px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.trash-button:hover {
+  border-color: rgb(246, 180, 180);
+  background: rgb(246, 180, 180);
+  transition: all 0.3s;
 }
 
 /*! sent side */
 .sents-list-container,
 .inbox-emails-link {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   border: 2px solid lightgray;
   padding: 5px;
