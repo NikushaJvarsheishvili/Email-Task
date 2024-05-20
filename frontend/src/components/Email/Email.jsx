@@ -6,10 +6,12 @@ import { dateOptions } from "/src/dateOptions.js";
 import { timeOptions } from "/src/dateOptions.js";
 import { Date } from "../../Date";
 import { handleEmailDelete } from "../../deleteEmail";
+import { AuthContext } from "/src/AuthContext";
 
 export const Email = () => {
   const [emailById, setEmailById] = useState(null);
   const { emailId, emailCategory } = useParams();
+  const { authState } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -68,9 +70,20 @@ export const Email = () => {
   const replyFunction = (e) => {
     e.preventDefault();
 
+    const otherRecipients = emailById.recipients.filter((recipients) => {
+      if (recipients !== authState.user.email) {
+        return true;
+      }
+    });
+
+    const recipientsUsers = [
+      emailById.sender.email,
+      otherRecipients.toString(),
+    ];
+
     navigate("/compose", {
       state: {
-        recipients: emailById.recipients.toString(),
+        recipients: recipientsUsers.toString(),
         subject: `Re: ${emailById.subject}`,
         body: `\n\n\n\n---\nOn ${day} ${time}, ${emailById.sender.email} wrote:\n\n${emailById.body}`,
       },

@@ -41,14 +41,14 @@ export const Register = () => {
   };
 
   const validationSchema = object({
-    email: string().required(),
+    email: string()
+      .required()
+      .matches(/^\S+@\S+\.\S+$/),
     password: string().required().min(8),
     confirmPassword: string()
       .required()
       .oneOf([ref("password"), null], "Passwords must match"),
   });
-
-  console.log(errorMessage);
 
   return (
     <div className="register-container">

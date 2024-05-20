@@ -6,16 +6,19 @@ import MongoStore from "connect-mongo";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 
-import statusRouter from "./routers/user/statusRouter.js";
-import registerRouter from "./routers/user/registerRouter.js";
-import loginRouter from "./routers/user/loginRouter.js";
-import logoutRouter from "./routers/user/logoutRouter.js";
+// import statusRouter from "./routers/user/statusRouter.js";
+// import registerRouter from "./routers/user/registerRouter.js";
+// import loginRouter from "./routers/user/loginRouter.js";
+// import logoutRouter from "./routers/user/logoutRouter.js";
 
-import emailsRouter from "./routers/email/emailsRouter.js";
-import emailCategoryRouter from "./routers/email/emailCategoryRouter.js";
-import emailIdRouter from "./routers/email/emailIdRouter.js";
-import emailsPatchRouter from "./routers/email/emailsPatchRouter.js";
-import emailDeleteRouter from "./routers/email/emailDeleteRouter.js";
+import { userRouter } from "./routers/userRouter.js";
+import { emailRouter } from "./routers/emailRouter.js";
+
+// import emailsRouter from "./routers/email/emailsRouter.js";
+// import emailCategoryRouter from "./routers/email/emailCategoryRouter.js";
+// import emailIdRouter from "./routers/email/emailIdRouter.js";
+// import emailsPatchRouter from "./routers/email/emailsPatchRouter.js";
+// import emailDeleteRouter from "./routers/email/emailDeleteRouter.js";
 
 import { handleError } from "./middleware/handleError.js";
 
@@ -46,16 +49,19 @@ app.use(
   })
 );
 
-app.use("/user/status", statusRouter);
-app.use("/user/register", registerRouter);
-app.use("/user/login", loginRouter);
-app.use("/user/logout", logoutRouter);
+// app.use("/user/status", statusRouter);
+// app.use("/user/register", registerRouter);
+// app.use("/user/login", loginRouter);
+// app.use("/user/logout", logoutRouter);
 
-app.use("/emails", emailsRouter);
-app.use("/emails/c/", emailCategoryRouter);
-app.use("/emails", emailIdRouter);
-app.use("/emails", emailsPatchRouter);
-app.use("/email/delete", emailDeleteRouter);
+app.use("/user", userRouter);
+app.use("/emails", emailRouter);
+
+// app.use("/emails", emailsRouter);
+// app.use("/emails/c/", emailCategoryRouter);
+// app.use("/emails", emailIdRouter);
+// app.use("/emails", emailsPatchRouter);
+// app.use("/email/delete", emailDeleteRouter);
 
 app.use(handleError);
 

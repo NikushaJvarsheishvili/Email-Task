@@ -11,7 +11,7 @@ export const handleEmailDelete = async (
   console.log(emailsData);
 
   const response = await axiosInterceptorsInstance.delete(
-    `/email/delete/${emailId}`
+    `/emails/delete/${emailId}`
   );
 
   if (response.status === 200 && response.statusText === "OK" && emailsData) {
