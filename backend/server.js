@@ -15,6 +15,8 @@ const app = express();
 
 dotenv.config({ path: "./config/.env" });
 
+app.set("trust proxy", 1);
+
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(
@@ -33,6 +35,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 2,
       httpOnly: true,
       sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
     },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URL,
