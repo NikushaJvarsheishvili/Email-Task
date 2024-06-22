@@ -44,7 +44,6 @@ export const Compose = () => {
         validateOnChange={false}
       >
         {(formik) => {
-          console.log(formik);
           return (
             <Form>
               <label>

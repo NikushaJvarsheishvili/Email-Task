@@ -1,5 +1,9 @@
 import { createContext, useEffect, useState } from "react";
-import { axiosInstance, axiosInterceptorsInstance } from "./axiosInstance.js";
+import {
+  axiosInstance,
+  axiosInterceptorsInstance,
+  setCsrfToken,
+} from "./axiosInstance.js";
 
 export const AuthContext = createContext({
   initialLoading: true,
@@ -16,6 +20,12 @@ export const AuthContextProvider = ({ children }) => {
     const checkStatus = async () => {
       try {
         const response = await axiosInstance.get("/user/status");
+
+        setCsrfToken(axiosInstance, response.headers["x-csrf-token"]);
+        setCsrfToken(
+          axiosInterceptorsInstance,
+          response.headers["x-csrf-token"]
+        );
 
         setAuthState({
           ...authState,

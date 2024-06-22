@@ -3,6 +3,7 @@ import { useContext } from "react";
 import {
   axiosInstance,
   axiosInterceptorsInstance,
+  setCsrfToken,
 } from "/src/axiosInstance.js";
 import { AuthContext } from "/src/AuthContext";
 import { Formik, Form, ErrorMessage, Field } from "formik";
@@ -18,6 +19,8 @@ export const Login = () => {
     const response = await axiosInstance.post("/user/login", values);
 
     if (response.statusText === "OK") {
+      setCsrfToken(axiosInstance, response.headers["x-csrf-token"]);
+      setCsrfToken(axiosInterceptorsInstance, response.headers["x-csrf-token"]);
       navigate("/c/inbox");
       setAuthState({
         ...authState,
@@ -47,7 +50,6 @@ export const Login = () => {
         validateOnChange={false}
       >
         {(formik) => {
-          console.log(formik.errors);
           return (
             <Form noValidate>
               <label>

@@ -10,9 +10,10 @@ import {
   registerController,
   statusController,
 } from "../controller/userController.js";
+import { csfrProtection } from "../middleware/csrfProtection.js";
 
 userRouter.post("/login", validateSchema(loginSchema), loginController);
-userRouter.delete("/logout", logoutController);
+userRouter.delete("/logout", csfrProtection, logoutController);
 userRouter.post(
   "/register",
   validateSchema(registerSchema),

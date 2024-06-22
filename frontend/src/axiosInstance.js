@@ -1,16 +1,13 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+const config = {
+  baseURL: "/api",
   withCredentials: true,
-});
+};
 
+export const axiosInstance = axios.create(config);
 
-
-export const axiosInterceptorsInstance = axios.create({
-  baseURL: "http://localhost:3000",
-  withCredentials: true,
-});
+export const axiosInterceptorsInstance = axios.create(config);
 axiosInterceptorsInstance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -20,3 +17,11 @@ axiosInterceptorsInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export const setCsrfToken = (inputInstance, csrfToken) => {
+  const requestMethods = ["post", "put", "patch", "delete"];
+
+  requestMethods.forEach((method) => {
+    inputInstance.defaults.headers[method]["X-CSRF-Token"] = csrfToken;
+  });
+};
