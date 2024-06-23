@@ -21,7 +21,8 @@ export const Login = () => {
     if (response.statusText === "OK") {
       setCsrfToken(axiosInstance, response.headers["x-csrf-token"]);
       setCsrfToken(axiosInterceptorsInstance, response.headers["x-csrf-token"]);
-      navigate("/c/inbox");
+      // navigate("/c/inbox");
+      window.location.href = "/c/index";
       setAuthState({
         ...authState,
         user: response.data.user,

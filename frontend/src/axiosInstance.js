@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const config = {
-  baseURL: "/api",
+  // baseURL: "/api",
+  baseURL: "http://localhost:3000",
   withCredentials: true,
 };
 
