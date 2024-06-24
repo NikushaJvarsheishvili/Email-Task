@@ -89,6 +89,14 @@ export const Email = () => {
       },
     });
   };
+  const formatText = (text) => {
+    return text?.split("\n").map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
 
   return (
     <>
@@ -123,7 +131,7 @@ export const Email = () => {
           </div>
 
           <div className="body-container">
-            <p>{emailById.body}</p>
+            <p>{formatText(emailById.body)}</p>
           </div>
 
           <div className="button-container">
