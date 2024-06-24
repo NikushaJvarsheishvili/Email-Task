@@ -40,13 +40,11 @@ export const Rootlayout = ({ width }) => {
     try {
       const response = await axiosInstance.delete("/user/logout");
 
-      if (response.statusText === "OK") {
-        navigate("/login");
-        setAuthState({
-          ...authState,
-          user: null,
-        });
-      }
+      navigate("/login");
+      setAuthState({
+        ...authState,
+        user: null,
+      });
     } catch (error) {
       console.log(error);
     }

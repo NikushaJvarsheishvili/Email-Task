@@ -16,17 +16,18 @@ export const Login = () => {
   const loginFunction = async (event, values) => {
     event.preventDefault();
 
-    const response = await axiosInstance.post("/user/login", values);
+    try {
+      const response = await axiosInstance.post("/user/login", values);
 
-    if (response.statusText === "OK") {
       setCsrfToken(axiosInstance, response.headers["x-csrf-token"]);
       setCsrfToken(axiosInterceptorsInstance, response.headers["x-csrf-token"]);
-      // navigate("/c/inbox");
-      window.location.href = "/c/index";
+      navigate("/c/inbox");
       setAuthState({
         ...authState,
         user: response.data.user,
       });
+    } catch (err) {
+      console.log(err.message);
     }
   };
 

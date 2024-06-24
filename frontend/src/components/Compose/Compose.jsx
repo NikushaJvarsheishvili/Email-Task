@@ -14,9 +14,7 @@ export const Compose = () => {
     try {
       const response = await axiosInterceptorsInstance.post("/emails", values);
 
-      if (response.statusText === "OK") {
-        navigate(`/c/sent/${response.data.email._id}`);
-      }
+      navigate(`/c/sent/${response.data.email._id}`);
     } catch (err) {
       console.log(err.message);
     }

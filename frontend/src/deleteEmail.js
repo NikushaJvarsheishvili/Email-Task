@@ -14,7 +14,7 @@ export const handleEmailDelete = async (
     `/emails/delete/${emailId}`
   );
 
-  if (response.status === 200 && response.statusText === "OK" && emailsData) {
+  if (response.status === 200 && emailsData) {
     const emailDelete = emailsData.filter((email) => email._id !== emailId);
     setEmailsData(emailDelete);
   }

@@ -51,10 +51,10 @@ export const Email = () => {
     );
     setEmailById(response.data.email);
 
-    if (response.statusText === "OK" && response.data.email.archived) {
+    if (response.status === 200 && response.data.email.archived) {
       navigate(`/c/archived/${emailId}`);
       console.log("this is true");
-    } else if (response.statusText === "OK" && !response.data.email.archived) {
+    } else if (response.status === 200 && !response.data.email.archived) {
       navigate(`/c/inbox/${emailId}`);
     }
   };

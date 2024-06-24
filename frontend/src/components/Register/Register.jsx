@@ -16,7 +16,7 @@ export const Register = () => {
 
     try {
       const response = await axiosInstance.post("/user/register", values);
-      if (response.status === 200 && response.statusText === "OK") {
+      if (response.status === 200) {
         setRegistrationSuccessfully(true);
         setTimeout(() => {
           navigate("/login");
